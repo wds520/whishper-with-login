@@ -2,6 +2,9 @@ import {transcriptions} from './stores';
 import { dev } from '$app/environment';
 import { browser } from '$app/environment';
 import { env } from '$env/dynamic/public';
+import { storeToken } from '$lib/stores';
+
+// console.log(storeToken, localStorage, '999-9999999')
 
 export let CLIENT_API_HOST = browser ? `${dev ? env.PUBLIC_API_HOST : ""}` : `${env.PUBLIC_INTERNAL_API_HOST}`;
 export let CLIENT_WS_HOST = browser ? `${dev ? env.PUBLIC_API_HOST.replace("http://", "").replace("https://", "") : ""}` :  `${dev ? env.PUBLIC_INTERNAL_API_HOST.replace("http://", "").replace("https://", "") : ""}`;
@@ -18,11 +21,16 @@ export const validateURL = function (url) {
 
 export const deleteTranscription = async function (id) {
     const res = await fetch(`${CLIENT_API_HOST}/api/transcriptions/${id}`, {
-        method: "DELETE"
+        method: "DELETE",
+        headers: {
+            // Authorization: $storeToken
+        }
     });
 
     if (res.ok) {
         transcriptions.update((_transcriptions) => _transcriptions.filter(t => t.id !== id));
+    } else {
+        storeToken.set('')
     }
 }
 

@@ -4,6 +4,7 @@
 	import { uploadProgress } from '$lib/stores';
 
 	import toast from 'svelte-french-toast';
+	import { storeToken } from '$lib/stores';
 
 	let errorMessage = '';
 	let disableSubmit = true;
@@ -101,12 +102,14 @@
 				if (xhr.status === 200) {
 					resolve(xhr.response);
 					toast.success('Success!');
+					location.reload();
 				} else {
 					reject(xhr.statusText);
 					toast.error('Upload failed');
 				}
 				uploadProgress.set(0); // Reset progress after completion
 			});
+			
 
 			// Set up error event listener
 			xhr.addEventListener('error', () => {
@@ -116,6 +119,7 @@
 			});
 
 			xhr.open('POST', `${CLIENT_API_HOST}/api/transcriptions`);
+			xhr.setRequestHeader('Authorization', $storeToken)
 			xhr.send(formData);
 		});
 

@@ -27,6 +27,9 @@
             <span class="space-x-1">
                 <span class="font-bold text-xs">{tr.result.text.split(" ").length} words</span>
             </span>
+            <span class="space-x-1">
+                <span class="font-bold text-xs">{Math.floor(tr.endTime - tr.startTime) / 1000000000} s</span>
+            </span>
         </p>
     </span>
     <div class="flex items-center justify-center flex-wrap space-x-2">

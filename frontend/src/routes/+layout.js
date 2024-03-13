@@ -2,7 +2,7 @@
  * @Author: wds
  * @Date: 2024-03-06 21:09:09
  * @LastEditors: wds
- * @LastEditTime: 2024-03-13 22:12:42
+ * @LastEditTime: 2024-03-13 22:15:46
  */
 import { transcriptions, storeToken } from '$lib/stores';
 import { browser, dev } from '$app/environment';

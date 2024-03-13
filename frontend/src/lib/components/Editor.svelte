@@ -2,7 +2,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { writable } from 'svelte/store';
 	import toast from 'svelte-french-toast';
-	import { editorSettings, currentTranscription, editorHistory } from '$lib/stores';
+	import { editorSettings, currentTranscription, editorHistory, storeToken } from '$lib/stores';
 	import EditorSettings from './EditorSettings.svelte';
 	import EditorSegment from './EditorSegment.svelte';
 	import { CLIENT_API_HOST } from '$lib/utils';
@@ -51,7 +51,8 @@
 			const response = await fetch(url, {
 				method: 'PATCH',
 				headers: {
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/json',
+					Authorization: $storeToken
 				},
 				body: JSON.stringify($currentTranscription)
 			});

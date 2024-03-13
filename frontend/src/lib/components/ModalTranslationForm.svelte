@@ -4,13 +4,18 @@
     import { CLIENT_API_HOST } from '$lib/utils';
 	import { env } from '$env/dynamic/public';
     export let tr;
+    import { storeToken } from '$lib/stores';
 
     let targetLanguage = null;
 
     let availableLanguages = [];
     const getAvailableLangs = () => {
         const fetchLanguages = () => {
-            fetch(`${env.PUBLIC_TRANSLATION_API_HOST}/languages`)
+            fetch(`${env.PUBLIC_TRANSLATION_API_HOST}/languages`, {
+                headers: {
+                    Authorization: $storeToken
+                }
+            })
             .then(res => res.json())
             .then(data => {
                 if (data) {
@@ -18,6 +23,9 @@
                     // Languages fetched successfully, stop trying
                     clearInterval(fetchLanguagesInterval);
                 }
+            }).catch((err) => {
+                console.log('err990000')
+                
             });
         };
 
@@ -29,7 +37,11 @@
     const handleTranslate = (id) => {
         if(targetLanguage) {
             const url = `${CLIENT_API_HOST}/api/translate/${id}/${targetLanguage}`;
-            fetch(url)
+            fetch(url, {
+                headers: {
+                    Authorization: $storeToken
+                }
+            })
             .then(() => toast.success('Translation started!'))
             .catch(error => {
                 console.error(error);
